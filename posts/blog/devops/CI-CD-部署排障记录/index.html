@@ -1,0 +1,704 @@
+<!DOCTYPE html><html dir="ltr" lang="zh" class="overflow-y-scroll scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" href="/favicon.ico"><link rel="canonical" href="https://guanwx.me/posts/blog/devops/CI-CD-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C%E8%AE%B0%E5%BD%95/"><meta name="generator" content="Astro v7.0.3"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-web@1.522.0/lxgwwenkaiscreen/result.css"><!-- Font --><style>@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/2213c1e7fbe06cc7.woff") format("woff"), url("/_astro/fonts/b87f789471b4c602.ttf") format("truetype");font-display:swap;font-weight:300;font-style:italic;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/c487dbd9c215141e.woff") format("woff"), url("/_astro/fonts/bb0c016d60298234.ttf") format("truetype");font-display:swap;font-weight:400;font-style:italic;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/0976c79a1e97c08d.woff") format("woff"), url("/_astro/fonts/b3e69a4f03324880.ttf") format("truetype");font-display:swap;font-weight:500;font-style:italic;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/3c46d5a1dde2929d.woff") format("woff"), url("/_astro/fonts/0ff1dfaf1dff21d0.ttf") format("truetype");font-display:swap;font-weight:600;font-style:italic;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/e9aa617e80052f4b.woff") format("woff"), url("/_astro/fonts/d9a5ad8b8018e5de.ttf") format("truetype");font-display:swap;font-weight:700;font-style:italic;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/5056f1a50e5e7744.woff") format("woff"), url("/_astro/fonts/3e4dac0d0220e48a.ttf") format("truetype");font-display:swap;font-weight:300;font-style:normal;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/e734307f8c328338.woff") format("woff"), url("/_astro/fonts/ba3036786bf88603.ttf") format("truetype");font-display:swap;font-weight:400;font-style:normal;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/dfa89044152f7da4.woff") format("woff"), url("/_astro/fonts/39aec4e7fc7cc077.ttf") format("truetype");font-display:swap;font-weight:500;font-style:normal;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/8bbd58b325585200.woff") format("woff"), url("/_astro/fonts/b33609507afd910d.ttf") format("truetype");font-display:swap;font-weight:600;font-style:normal;}@font-face{font-family:"Google Sans Code-1a30c214885cb404";src:url("/_astro/fonts/035035a9ddbd14aa.woff") format("woff"), url("/_astro/fonts/50fcf54bf575f53f.ttf") format("truetype");font-display:swap;font-weight:700;font-style:normal;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:300;font-style:italic;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:400;font-style:italic;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:500;font-style:italic;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:600;font-style:italic;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:700;font-style:italic;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:300;font-style:normal;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:400;font-style:normal;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:500;font-style:normal;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:600;font-style:normal;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}@font-face{font-family:"Google Sans Code-1a30c214885cb404 fallback: Courier New";src:local("Courier New");font-display:swap;font-weight:700;font-style:normal;size-adjust:99.9837%;ascent-override:96.6157%;descent-override:28.6047%;}:root{--font-google-sans-code:"Google Sans Code-1a30c214885cb404","Google Sans Code-1a30c214885cb404 fallback: Courier New",monospace;}</style><!-- Primary meta --><title>低配服务器 CI/CD 部署问题 | Guanwx</title><meta name="title" content="低配服务器 CI/CD 部署问题 | Guanwx"><meta name="description" content="记录低配服务器 CI/CD 部署排障：镜像构建提速、健康检查误报、内存卡死的根因与对策。"><meta name="author" content="guanwx"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:site_name" content="Guanwx"><meta property="og:title" content="低配服务器 CI/CD 部署问题 | Guanwx"><meta property="og:description" content="记录低配服务器 CI/CD 部署排障：镜像构建提速、健康检查误报、内存卡死的根因与对策。"><meta property="og:url" content="https://guanwx.me/posts/blog/devops/CI-CD-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C%E8%AE%B0%E5%BD%95/"><meta property="og:image" content="https://guanwx.me/default-og.jpg"><!-- Twitter / X --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://guanwx.me/posts/blog/devops/CI-CD-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C%E8%AE%B0%E5%BD%95/"><meta property="twitter:title" content="低配服务器 CI/CD 部署问题 | Guanwx"><meta property="twitter:description" content="记录低配服务器 CI/CD 部署排障：镜像构建提速、健康检查误报、内存卡死的根因与对策。"><meta property="twitter:image" content="https://guanwx.me/default-og.jpg"><!-- RSS autodiscovery --><link rel="alternate" type="application/rss+xml" title="Guanwx" href="https://guanwx.me/rss.xml/"><!-- Filled at runtime by theme.ts to match the current background colour --><meta name="theme-color" content=""><!-- Extra head content injected by child layouts (e.g. JSON-LD, article meta) --><meta property="og:type" content="article"><meta property="article:published_time" content="2026-10-30T21:09:00.000Z"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"低配服务器 CI/CD 部署问题 | Guanwx","datePublished":"2026-10-30T21:09:00.000Z","author":[{"@type":"Person","name":"guanwx","url":"https://satna.ing"}]}</script><!--
+      Inline FOUC-prevention script: sets data-theme on <html> before
+      the browser paints. Runs synchronously, no defer/async.
+    --><script>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        const theme = stored ?? (prefersDark ? "dark" : "light");
+        const root = document.firstElementChild;
+        root?.setAttribute("data-theme", theme);
+        root?.classList.toggle("dark", theme === "dark");
+        // Expose value so theme.ts can skip re-detection.
+        window.__theme = { value: theme };
+      })();
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.2i1RQzKf.js"></script><link rel="stylesheet" href="/_astro/Footer.BHp9Chqc.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-bztu2lml-1"] { view-transition-name: github-actions; }@layer astro { ::view-transition-old(github-actions) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(github-actions) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(github-actions) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(github-actions) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: \90E8\7F72; }@layer astro { ::view-transition-old(\90E8\7F72) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\90E8\7F72) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\90E8\7F72) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\90E8\7F72) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body class="bg-background font-app text-foreground selection:bg-accent/75 selection:text-accent-foreground flex min-h-svh flex-col"><a id="skip-to-content" href="#main-content" class="bg-background text-accent absolute inset-s-16 -top-full z-50 px-3 py-2 backdrop-blur-lg transition-all focus:top-4">跳转到正文</a><header class="bg-background sticky top-0 z-50 flex flex-col items-center justify-between shadow-[0_2px_14px_rgba(0,0,0,0.22)] dark:shadow-[0_2px_16px_rgba(0,0,0,0.7)] sm:flex-row"><div class="app-layout bg-background relative flex w-full items-baseline justify-between py-4 sm:items-center sm:py-6"><a href="/" class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none">Guanwx</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ms-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"><button id="menu-btn" class="focus-outline self-end p-2 sm:hidden" aria-label="打开菜单" aria-expanded="false" aria-controls="menu-items" data-label-open="打开菜单" data-label-close="关闭菜单"><svg width="24" height="24" viewBox="0 0 24 24" id="close-icon" class="hidden"><path fill="currentColor" d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6z" /></svg><svg width="24" height="24" viewBox="0 0 24 24" id="menu-icon"><path fill="currentColor" d="M21 6a1 1 0 0 1-1 1H4a1 1 0 1 1 0-2h16a1 1 0 0 1 1 1m0 6a1 1 0 0 1-1 1H4a1 1 0 0 1 0-2h16a1 1 0 0 1 1 1m0 6a1 1 0 0 1-1 1H4a1 1 0 0 1 0-2h16a1 1 0 0 1 1 1" /></svg></button><ul id="menu-items" class="[&amp;&gt;li&gt;a]:hover:text-accent mt-4 hidden w-44 grid-cols-2 place-content-center gap-2 sm:mt-0 sm:flex sm:w-auto sm:gap-x-5 sm:gap-y-0 sm:[&amp;&gt;li]:h-8 [&amp;&gt;li&gt;a]:block [&amp;&gt;li&gt;a]:px-4 [&amp;&gt;li&gt;a]:py-3 [&amp;&gt;li&gt;a]:text-center [&amp;&gt;li&gt;a]:font-medium sm:[&amp;&gt;li&gt;a]:px-2 sm:[&amp;&gt;li&gt;a]:py-1"><li class="col-span-2"><a href="/posts/" class="active-nav">文章</a></li><li class="col-span-2"><a href="/tags/">标签</a></li><li class="col-span-2"><a href="/about/">关于</a></li><li class="col-span-2"><a href="/archives/" title="归档" aria-label="归档" class="group inline-flex items-center gap-1 hover:text-accent focus-outline flex size-full justify-center p-3 sm:relative sm:size-8 sm:p-0"><svg width="24" height="24" viewBox="0 0 24 24" class="hidden sm:absolute sm:top-1/2 sm:left-1/2 sm:block sm:size-6 sm:-translate-x-1/2 sm:-translate-y-1/2"><path fill="currentColor" d="M2 5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2 2 2 0 0 1-2 2H4a2 2 0 0 1-2-2m17 4c.513 0 .936.463.993 1.06l.007.14v7.2c0 1.917-1.249 3.484-2.824 3.594L17 21H7c-1.598 0-2.904-1.499-2.995-3.388L4 17.4v-7.2C4 9.537 4.448 9 5 9zm-5 2h-4l-.117.007a1 1 0 0 0 0 1.986L10 13h4l.117-.007a1 1 0 0 0 0-1.986z" /></svg><span class="sm:sr-only">归档</span></a></li><li class="col-span-1 flex items-center justify-center"><a href="/search/" title="搜索" aria-label="搜索" class="group inline-flex items-center gap-1 hover:text-accent focus-outline relative size-8"><svg width="24" height="24" viewBox="0 0 24 24" class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2"><path fill="currentColor" d="m19.6 21-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5 6.313 6.313 5 9.5t1.313 3.188T9.5 14" /></svg><span class="sr-only">搜索</span></a></li><li class="col-span-1 flex items-center justify-center"><button id="theme-btn" class="focus-outline hover:[&amp;&gt;svg]:fill-accent relative size-12 p-4 sm:size-8" title="切换主题" aria-label="auto" aria-live="polite"><svg width="24" height="24" viewBox="0 0 24 24" class="absolute top-[50%] left-[50%] translate-[-50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"><path fill="currentColor" d="M12 1.992a10 10 0 1 0 9.236 13.838c.341-.82-.476-1.644-1.298-1.31a6.5 6.5 0 0 1-6.864-10.787l.077-.08c.551-.63.113-1.653-.758-1.653h-.266l-.068-.006z" /></svg><svg width="24" height="24" viewBox="0 0 24 24" class="absolute top-[50%] left-[50%] translate-[-50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"><path fill="currentColor" d="M12 19a1 1 0 0 1 .993.883L13 20v1a1 1 0 0 1-1.993.117L11 21v-1a1 1 0 0 1 1-1m6.313-2.09.094.083.7.7a1 1 0 0 1-1.32 1.497l-.094-.083-.7-.7a1 1 0 0 1 1.218-1.567zm-11.306.083a1 1 0 0 1 .083 1.32l-.083.094-.7.7a1 1 0 0 1-1.497-1.32l.083-.094.7-.7a1 1 0 0 1 1.414 0M4 11a1 1 0 0 1 .117 1.993L4 13H3a1 1 0 0 1-.117-1.993L3 11zm17 0a1 1 0 0 1 .117 1.993L21 13h-1a1 1 0 0 1-.117-1.993L20 11zM6.213 4.81l.094.083.7.7a1 1 0 0 1-1.32 1.497l-.094-.083-.7-.7A1 1 0 0 1 6.11 4.74zm12.894.083a1 1 0 0 1 .083 1.32l-.083.094-.7.7a1 1 0 0 1-1.497-1.32l.083-.094.7-.7a1 1 0 0 1 1.414 0M12 2a1 1 0 0 1 .993.883L13 3v1a1 1 0 0 1-1.993.117L11 4V3a1 1 0 0 1 1-1m0 5a5 5 0 1 1-4.995 5.217L7 12l.005-.217A5 5 0 0 1 12 7" /></svg></button></li></ul></nav></div></header><script type="module">function e(){let e=document.querySelector(`#menu-btn`),t=document.querySelector(`#menu-items`),n=document.querySelector(`#menu-icon`),r=document.querySelector(`#close-icon`);if(!e||!t||!n||!r)return;let i=e.dataset.labelOpen??`Open menu`,a=e.dataset.labelClose??`Close menu`;e.addEventListener(`click`,()=>{let o=e.getAttribute(`aria-expanded`)===`true`;e.setAttribute(`aria-expanded`,o?`false`:`true`),e.setAttribute(`aria-label`,o?i:a),t.classList.toggle(`hidden`),t.classList.toggle(`grid`),n.classList.toggle(`hidden`),r.classList.toggle(`hidden`)})}function t(){let e=document.getElementById(`skip-to-content`);e&&e.addEventListener(`click`,e=>{if(e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button!==0)return;e.preventDefault();let t=document.getElementById(`main-content`);t&&(t.setAttribute(`tabindex`,`-1`),t.addEventListener(`blur`,()=>t.removeAttribute(`tabindex`),{once:!0}),t.focus(),t.scrollIntoView({behavior:`smooth`}))})}e(),document.addEventListener(`astro:after-swap`,e),t(),document.addEventListener(`astro:after-swap`,t);</script><div class="app-layout flex items-center justify-start"><a id="back-button" href="/" class="group inline-flex items-center gap-1 hover:text-accent focus-outline hover:text-foreground/75 -ms-2 mt-8 mb-2"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="m15 6-6 6 6 6" /></svg><span>返回</span></a></div><script type="module">function e(){let e=document.querySelector(`#back-button`),t=sessionStorage.getItem(`backUrl`);t&&e&&(e.href=t)}document.addEventListener(`astro:page-load`,e),e();</script><main id="main-content" class="app-layout" data-pagefind-body><h1 style="view-transition-name:ci-cd-u0090e8u007f72u006392u00969cu008bb0u005f55" class="text-accent inline-block text-2xl font-bold sm:text-3xl">低配服务器 CI/CD 部署问题</h1><div class="my-2 flex items-center gap-2"><div class="text-muted-foreground flex items-center gap-x-2"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-6 min-w-5.5" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM16 3v4M8 3v4M4 11h16M7 14h.013M10.01 14h.005M13.01 14h.005M16.015 14h.005M13.015 17h.005M7.01 17h.005M10.01 17h.005" /></svg><span class="text-sm sm:text-base">发布于 <time datetime="2026-10-30T21:09:00.000Z">2026年10月31日</time></span></div><span aria-hidden="true" class="text-muted-foreground max-sm:hidden">|</span><a href="https://github.com/wxcoding/wxblog/edit/master/src/content/posts/blog/devops/CI-CD 部署排障记录.md" target="_blank" rel="noopener noreferrer" class="hover:text-accent text-muted-foreground flex justify-baseline gap-1.5 max-sm:hidden"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" /></svg><span>编辑此页</span></a></div><article id="article" class="mt-8 w-full app-prose max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"><h2 id="cicd-低配服务器部署排障记录2026-10-31">CI/CD 低配服务器部署排障记录（2026-10-31）</h2>
+<blockquote><p>环境：GitHub Actions（境外 runner）→ 阿里云 ACR 个人版（杭州）→ 阿里云轻量应用服务器（2vCPU / 1GiB / 杭州），Docker Compose 单机部署（postgres + redis + afs-server + afs-web）。</p></blockquote>
+<h2 id="一根因总览">一、根因总览</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>层面</th><th>问题</th><th>状态</th></tr></thead><tbody><tr><td>构建</td><td>镜像内重复 Maven/npm 构建，跨国推送 10m51s</td><td>✅ 已修复</td></tr><tr><td>部署脚本</td><td><code>pull --timeout</code> flag 不兼容 Compose v5</td><td>✅ 已修复</td></tr><tr><td>健康检查</td><td>afs-web healthcheck 误报 unhealthy 触发回滚</td><td>✅ 已修复</td></tr><tr><td>镜像仓库</td><td>push access denied（凭据/仓库权限）</td><td>✅ 已恢复</td></tr><tr><td>网络</td><td>VPC 内网拉镜像不可行（个人版 ACR 不支持）</td><td>⛔ 已回退公网</td></tr><tr><td><strong>服务器规格</strong></td><td><strong>2C1G，1GiB 内存物理不足，部署峰值必卡死</strong></td><td>⚠️ 待升配</td></tr></tbody></table>
+<hr>
+<h2 id="二构建阶段镜像构建推送慢10m51s--1m">二、构建阶段：镜像构建推送慢（10m51s → ~1m）</h2>
+<p><strong>现象</strong>：docker-build 阶段推送镜像耗时 10 分 51 秒。</p>
+<p><strong>根因</strong>（两个叠加）：</p>
+<ol>
+<li>GitHub runner 在境外，推送阿里云 ACR（国内）是跨国传输；</li>
+<li><strong>Dockerfile 在镜像内重复构建</strong>——CI 的 build 阶段已经打过 jar / dist，镜像里又跑一遍 <code>mvn package</code> / <code>npm run build</code>，层缓存全失效，推送量大。</li>
+</ol>
+<p><strong>修复</strong>：</p>
+<ul>
+<li><code>afs-server/Dockerfile</code>、<code>afs-web/Dockerfile</code> 删掉 builder 阶段，直接 <code>COPY target/*.jar</code> / <code>COPY dist</code>（CI 产物经 artifact 传入）；</li>
+<li>ci-cd.yml 两处 <code>cache-to: type=gha,mode=max</code> → <code>mode=min</code>（不再导出 builder 中间层）；</li>
+<li>修复 <code>.dockerignore</code>：构建上下文是子目录（<code>./afs-server</code>、<code>./afs-web</code>），路径模式必须相对 context；<strong><code>afs-web/.dockerignore</code> 原来忽略了 <code>dist</code>，会导致 COPY 不到产物</strong>。</li>
+</ul>
+<p><strong>效果</strong>：构建应用 1m11s；首次推送后基础层已在 ACR，之后每次只推 jar 层（几十 MB）+ dist 层（几 MB）。</p>
+<p><strong>注意</strong>：本地 <code>docker compose up -d --build</code> 前需先 <code>mvn package</code> 和 <code>npm run build</code>（docker-compose.yml 头部注释已写明）。</p>
+<hr>
+<h2 id="三部署阶段">三、部署阶段</h2>
+<h3 id="31-unknown-flag---timeout">3.1 <code>unknown flag: --timeout</code></h3>
+<p><strong>现象</strong>：服务器部署失败，<code>docker compose pull --timeout 3000</code> 报 unknown flag。</p>
+<p><strong>根因</strong>：服务器是 <strong>Compose v5.6.1</strong>，v5 大版本移除了 <code>pull</code> 子命令的 <code>--timeout</code> flag（v2.x 有）。不是版本太旧，是太新。</p>
+<p><strong>修复</strong>：ci-cd.yml 中删除该 flag。<code>up -d --wait --wait-timeout</code>（回滚逻辑依赖）在 v5 中保留，不受影响。</p>
+<h3 id="32-afs-web-unhealthy--自动回滚">3.2 afs-web unhealthy → 自动回滚</h3>
+<p><strong>现象</strong>：postgres / redis / afs-server 全部 Healthy，afs-web 被判 unhealthy，触发自动回滚。</p>
+<p><strong>排查过程</strong>：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="bash"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">docker</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> inspect</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> --format=</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">{{json .State.Health}}</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> afs-web</span></span>
+<span class="line"><span style="--shiki-light:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic"># Output: "wget: can't connect to remote host: Connection refused"</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">docker</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> logs</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> afs-web</span><span style="--shiki-light:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">   # access log 全是正常 200 请求，nginx 活得好好的</span></span></code></pre>
+<p><strong>根因</strong>：容器内 <code>localhost</code> 解析到 IPv6 <code>::1</code>，而 nginx <code>listen 80;</code> 只绑 IPv4。alpine 的 busybox wget 连 <code>::1:80</code> 被拒且未回退 IPv4。从外部（IPv4 端口映射）访问完全正常，<strong>是健康检查自身误报</strong>。该 healthcheck 自写下起从未工作过（afs-web 第一次真正启动）。</p>
+<p><strong>修复</strong>：docker-compose.prod.yml 与 docker-compose.yml 中健康检查改用 <code>127.0.0.1</code>：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="yaml"><code><span class="line"><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA">test</span><span style="--shiki-light:#D32F2F;--shiki-dark:#D6DEEB">:</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB"> [</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">"</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">CMD-SHELL</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">"</span><span style="--shiki-light:#212121;--shiki-dark:#D6DEEB">,</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">wget -q --spider http://127.0.0.1/health || exit 1</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">"</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">]</span></span></code></pre>
+<p><strong>经验</strong>：健康检查不是形式主义——本次回滚逻辑（<code>up --wait</code> 失败 → 恢复 PREV_TAG）正因为有它才兜住。探活端点要轻量专用（nginx <code>return 200 'ok'</code>），Java 服务必须配 <code>start_period</code>（prod 已配 60s）。</p>
+<h3 id="33-push-access-denied">3.3 push access denied</h3>
+<p><strong>现象</strong>：docker-build 推送报 <code>push access denied, repository does not exist or may require authorization</code>，但 login 步骤成功。</p>
+<p><strong>结论</strong>：login 成功 ≠ 有推送权限。排查路径：本地用同凭据 <code>docker login</code> + push 一个 hello-world 测试镜像定位；检查 ACR 访问凭证（需用<strong>固定密码</strong>非临时密码）、命名空间下仓库是否存在、GitHub Secrets 四个值（<code>ALIYUN_ACR_REGISTRY / NAMESPACE / USERNAME / PASSWORD</code>，注意 REGISTRY 不带 <code>https://</code>、不带尾 <code>/</code>）。后重设凭证后恢复。</p>
+<h3 id="34-vpc-内网拉镜像不可行已回退">3.4 VPC 内网拉镜像：不可行（已回退）</h3>
+<p><strong>目的</strong>：绕开公网小带宽，内网拉镜像不限速。</p>
+<p><strong>结论</strong>：<strong>个人版 ACR 不支持 VPC 访问</strong>（企业版功能，控制台无“访问控制”菜单）。VPC 域名虽能解析到 100.x 内网地址，但 443 直接超时。验证命令：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="bash"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">curl</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -v</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> --max-time</span><span style="--shiki-light:#1976D2;--shiki-dark:#F78C6C"> 10</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> https://</span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA">&#x3C;</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D">vpc域</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">名</span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA">></span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D">/v2/</span><span style="--shiki-light:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">   # 401=通;超时=不通</span></span></code></pre>
+<p><strong>处置</strong>：删除 GitHub Secret <code>ALIYUN_ACR_REGISTRY_VPC</code> 即回退公网（ci-cd.yml 中为 <code>${{ secrets.ALIYUN_ACR_REGISTRY_VPC || secrets.ALIYUN_ACR_REGISTRY }}</code>，未配置自动 fallback）。</p>
+<h3 id="35-drone-ssh-warning无害">3.5 drone-ssh warning（无害）</h3>
+<p>部署日志中多条 <code>DRONE_SSH_PREV_COMMAND_EXIT_CODE variable is not set</code> —— appleboy/ssh-action（drone-ssh v1.8.0）自身内部变量的已知日志，可无视。</p>
+<hr>
+<h2 id="四服务器卡死最终根因是规格">四、服务器卡死：最终根因是规格</h2>
+<p><strong>现象</strong>：一部署服务器整机卡死，SSH 敲不动；拉镜像最低 21KB/s。</p>
+<p><strong>根因</strong>：轻量应用服务器 <strong>2vCPU / 1GiB</strong>。内存账：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>占用方</th><th>约需内存</th></tr></thead><tbody><tr><td>afs-server（JVM 堆 512m + JVM 开销）</td><td>~800MB</td></tr><tr><td>postgres</td><td>~300MB</td></tr><tr><td>redis + nginx</td><td>~100MB</td></tr><tr><td>系统 + dockerd</td><td>~500MB</td></tr><tr><td><strong>合计</strong></td><td><strong>~1.6GB，超物理内存 60%</strong></td></tr></tbody></table>
+<ul>
+<li><strong>稳态</strong>（~1GB）贴着红线能活，所以之前服务一直在跑；</li>
+<li><strong>部署峰值</strong>（pull 解压 + Java 冷启动 JIT + 新旧容器交替）~1.6GB → 顶穿 → OOM / 僵死；</li>
+<li>回滚能成功是因为旧镜像已在本地，省掉解压峰值；</li>
+<li>带宽标称 200Mbps 是<strong>峰值</strong>，轻量套餐月流量包超限后限速 → 解释拉镜像龟速。</li>
+</ul>
+<p><strong>应急（不升配时的保底）</strong>：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="bash"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">fallocate</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -l</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> 3G</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> /swapfile</span><span style="--shiki-light:#212121;--shiki-dark:#D6DEEB"> &#x26;&#x26;</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> chmod</span><span style="--shiki-light:#1976D2;--shiki-dark:#F78C6C"> 600</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> /swapfile</span><span style="--shiki-light:#212121;--shiki-dark:#D6DEEB"> &#x26;&#x26;</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> mkswap</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> /swapfile</span><span style="--shiki-light:#212121;--shiki-dark:#D6DEEB"> &#x26;&#x26;</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> swapon</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> /swapfile</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#C5E478;--shiki-dark-font-style:italic">echo</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD"> '</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">/swapfile none swap sw 0 0</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">'</span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> >></span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> /etc/fstab</span></span></code></pre>
+<p>swap 换不卡死，代价是内存不足时响应变慢。Java 堆可降至 <code>-Xmx384m</code>。</p>
+<p><strong>根治</strong>：升配 <strong>2C4G</strong>（底线 2C2G）。SSH 卡死时可用阿里云控制台 VNC 远程连接，或控制台重启实例（容器均 <code>restart: always</code> 自动拉起）。</p>
+<p><strong>诊断命令</strong>：</p>
+<pre class="astro-code astro-code-themes min-light night-owl" style="--shiki-light:#24292eff;--shiki-dark:#d6deeb;--shiki-light-bg:#ffffff;--shiki-dark-bg:#011627; overflow-x: auto;--file-name-offset: -0.75rem;" tabindex="0" data-language="bash"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">free</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -h</span><span style="--shiki-light:#24292EFF;--shiki-dark:#D6DEEB">; </span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">nproc</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">dmesg</span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> |</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> grep</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -i</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -A3</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD"> "</span><span style="--shiki-light:#22863A;--shiki-dark:#ECC48D">out of memory</span><span style="--shiki-light:#22863A;--shiki-dark:#D9F5DD">"</span><span style="--shiki-light:#D32F2F;--shiki-dark:#7FDBCA"> |</span><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic"> tail</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> -20</span><span style="--shiki-light:#C2C3C5;--shiki-light-font-style:inherit;--shiki-dark:#637777;--shiki-dark-font-style:italic">   # OOM 记录</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-light-font-style:inherit;--shiki-dark:#82AAFF;--shiki-dark-font-style:italic">docker</span><span style="--shiki-light:#2B5581;--shiki-dark:#ECC48D"> stats</span><span style="--shiki-light:#2B5581;--shiki-dark:#82AAFF"> --no-stream</span></span></code></pre>
+<hr>
+<h2 id="五数据库外部连接ssh-隧道方案">五、数据库外部连接：SSH 隧道方案</h2>
+<p><strong>结论</strong>：不开放公网 5432。Navicat 走 SSH 隧道。</p>
+<ul>
+<li>compose 中 postgres 映射 <code>127.0.0.1:5432:5432</code>（只绑回环，公网不可达）——docker-compose.prod.yml 已改；</li>
+<li>Navicat <strong>SSH 标签页</strong>：主机 <code>&#x3C;服务器IP></code>、端口 22、用户 root；</li>
+<li><strong>常规标签页</strong>：主机 <code>127.0.0.1</code>、端口 5432、库 afs、用户 postgres、密码取服务器 <code>.env</code> 的 <code>POSTGRES_PASSWORD</code>；</li>
+<li>临时查看可 <code>docker exec -it afs-postgres psql -U postgres -d afs</code>；</li>
+<li>安全组直放 5432 = 全网爆破目标，即使要做也必须限源 IP（<code>你的IP/32</code>），不推荐。</li>
+</ul>
+<hr>
+<h2 id="六ssh-认证备忘">六、SSH 认证备忘</h2>
+<ul>
+<li>CI 用私钥（GitHub Secret <code>SERVER_SSH_KEY</code>）连服务器；服务器 sshd 到<strong>固定文件</strong> <code>~/.ssh/authorized_keys</code> 中<strong>逐行匹配</strong>公钥，任一行匹配即通过；</li>
+<li>权限必须 <code>~/.ssh</code> = 700、<code>authorized_keys</code> = 600，属主为登录用户，否则 sshd（StrictModes）直接忽略；</li>
+<li>排查：<code>stat -c '%a %U:%G %n' ~/.ssh ~/.ssh/authorized_keys</code>；<code>sudo journalctl -u sshd -n 50</code>。</li>
+</ul>
+<hr>
+<h2 id="七改动文件清单">七、改动文件清单</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>文件</th><th>改动</th></tr></thead><tbody><tr><td><code>afs-server/Dockerfile</code></td><td>删 maven builder，直接 COPY jar</td></tr><tr><td><code>afs-web/Dockerfile</code></td><td>删 node builder，直接 COPY dist</td></tr><tr><td><code>.github/workflows/ci-cd.yml</code></td><td><code>mode=min</code>；删 <code>pull --timeout</code>；deploy job 增加 VPC REGISTRY fallback（未配置则公网）</td></tr><tr><td><code>afs-server/.dockerignore</code></td><td>路径改为相对 context；<code>target/</code> 排除但保留 <code>*.jar</code></td></tr><tr><td><code>afs-web/.dockerignore</code></td><td>放行 <code>dist</code>（关键）</td></tr><tr><td><code>docker-compose.yml</code></td><td>头部注释补前置构建步骤；afs-web healthcheck 改 <code>127.0.0.1</code></td></tr><tr><td><code>docker-compose.prod.yml</code></td><td>afs-web healthcheck 改 <code>127.0.0.1</code>；postgres 增加 <code>127.0.0.1:5432:5432</code></td></tr></tbody></table>
+<h2 id="八遗留事项">八、遗留事项</h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 服务器升配至 2C4G（根治卡死与部署慢）</li>
+<li class="task-list-item"><input type="checkbox" disabled> 升配前：添加 swap；<code>.env</code> 中 <code>JAVA_OPTS</code> 可降至 <code>-Xmx384m</code></li>
+<li class="task-list-item"><input type="checkbox" disabled> 轻量控制台查月流量使用情况（解释拉镜像限速）</li>
+<li class="task-list-item"><input type="checkbox" disabled> 如需 push 即自动部署：注释 deploy job 的 <code>if</code>，并将 notify 的 <code>if</code> 改为 <code>if: always()</code>（注意 environment: production 的审批配置）</li>
+</ul></article><hr class="my-8 border-dashed"><a href="https://github.com/wxcoding/wxblog/edit/master/src/content/posts/blog/devops/CI-CD 部署排障记录.md" target="_blank" rel="noopener noreferrer" class="hover:text-accent text-muted-foreground flex justify-baseline gap-1.5 sm:hidden"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3" /></svg><span>编辑此页</span></a><div id="btt-btn-container" class="fixed inset-e-4 bottom-8 z-50 md:sticky md:inset-e-auto md:float-end md:me-1 translate-y-14 opacity-0 transition duration-500"><button data-button="back-to-top" class="group bg-background relative px-2 py-1 size-14 rounded-full shadow-xl md:h-8 md:w-fit md:rounded-md md:shadow-none md:focus-visible:rounded-none md:bg-background/35 md:bg-clip-padding md:backdrop-blur-lg"><span id="progress-indicator" class="absolute inset-0 -z-10 block size-14 scale-110 rounded-full bg-transparent md:hidden md:h-8 md:rounded-md"></span><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block rotate-90 md:hidden" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 12h14M5 12l6 6M5 12l6-6" /></svg><span class="group-hover:text-accent sr-only text-sm md:not-sr-only"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block size-4" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M12 5v14M16 9l-4-4M8 9l4-4" /></svg>回到顶部</span></button></div><script data-astro-rerun>
+  function backToTop() {
+    const rootElement = document.documentElement;
+    const btnContainer = document.querySelector("#btt-btn-container");
+    const backToTopBtn = document.querySelector("[data-button='back-to-top']");
+    const progressIndicator = document.querySelector("#progress-indicator");
+
+    if (!rootElement || !btnContainer || !backToTopBtn || !progressIndicator)
+      return;
+
+    backToTopBtn.addEventListener("click", () => {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+
+    let lastVisible = null;
+    function handleScroll() {
+      const scrollTotal = rootElement.scrollHeight - rootElement.clientHeight;
+      const scrollTop = rootElement.scrollTop;
+      const scrollPercent = Math.floor((scrollTop / scrollTotal) * 100);
+
+      progressIndicator.style.setProperty(
+        "background-image",
+        `conic-gradient(var(--accent), var(--accent) ${scrollPercent}%, transparent ${scrollPercent}%)`
+      );
+
+      const isVisible = scrollTop / scrollTotal > 0.3;
+
+      if (isVisible !== lastVisible) {
+        btnContainer.classList.toggle("opacity-100", isVisible);
+        btnContainer.classList.toggle("translate-y-0", isVisible);
+        btnContainer.classList.toggle("opacity-0", !isVisible);
+        btnContainer.classList.toggle("translate-y-14", !isVisible);
+        lastVisible = isVisible;
+      }
+    }
+
+    let ticking = false;
+    document.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+  backToTop();
+</script><ul class="mt-4 mb-8 flex flex-wrap gap-4 sm:my-8"><li><a data-astro-transition-scope="astro-bztu2lml-1" href="/tags/github-actions/" class="flex items-center gap-0.5 border-foreground border-b-2 border-dashed hover:border-accent hover:text-accent hover:-mt-0.5 focus-visible:text-accent focus-visible:border-none text-sm"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="opacity-80 size-4" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 9h14M5 15h14M11 4 7 20M17 4l-4 16" /></svg>GitHub Actions</a></li><li><a data-astro-transition-scope="astro-bztu2lml-2" href="/tags/部署/" class="flex items-center gap-0.5 border-foreground border-b-2 border-dashed hover:border-accent hover:text-accent hover:-mt-0.5 focus-visible:text-accent focus-visible:border-none text-sm"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="opacity-80 size-4" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 9h14M5 15h14M11 4 7 20M17 4l-4 16" /></svg>部署</a></li></ul><div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start"><span class="italic">分享这篇文章：</span><div class="flex flex-wrap items-center justify-center gap-1 md:justify-start"><button type="button" data-copy-link="https://guanwx.me/posts/blog/devops/CI-CD-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C%E8%AE%B0%E5%BD%95/" data-copied-text="链接已复制" class="focus-outline inline-flex shrink-0 items-center justify-center p-2 hover:rotate-6 hover:text-accent sm:p-1" title="复制链接"><svg width="24" height="24" viewBox="0 0 24 24" class="size-6 scale-125 fill-current opacity-90 sm:scale-110"><path fill="currentColor" d="M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12z" /></svg><span class="sr-only">复制链接</span></button><a href="https://service.weibo.com/share/share.php?url=https://guanwx.me/posts/blog/devops/CI-CD-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C%E8%AE%B0%E5%BD%95/" title="分享到微博" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-1 hover:text-accent shrink-0 p-2 hover:rotate-6 sm:p-1"><svg width="24" height="24" viewBox="0 0 24 24" class="size-6 scale-125 fill-current opacity-90 sm:scale-110"><path fill="currentColor" d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.737 5.439zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.601.622.263.82.972.442 1.592m1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.18.601zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.179.8-1.793-.201-3.642-2.161-4.149m7.563-1.224c-.346-.105-.57-.18-.405-.615.375-.977.42-1.804 0-2.404-.781-1.112-2.915-1.053-5.364-.03 0 0-.766.331-.571-.271.376-1.217.315-2.224-.27-2.809-1.338-1.337-4.869.045-7.888 3.08C1.309 10.87 0 13.273 0 15.348c0 3.981 5.099 6.395 10.086 6.395 6.536 0 10.888-3.801 10.888-6.82 0-1.822-1.547-2.854-2.915-3.284zm1.908-5.092a3.1 3.1 0 0 0-2.96-.962.786.786 0 0 0-.616.932.79.79 0 0 0 .932.602 1.51 1.51 0 0 1 1.442.465c.376.421.466.977.316 1.473a.786.786 0 0 0 .51.992.813.813 0 0 0 .992-.512 3.11 3.11 0 0 0-.646-3.035zm2.418-2.195c-1.576-1.757-3.905-2.419-6.054-1.968a.91.91 0 0 0-.706 1.081.91.91 0 0 0 1.082.707 4.5 4.5 0 0 1 4.296 1.383 4.53 4.53 0 0 1 .947 4.416.91.91 0 0 0 .586 1.157c.479.165.991-.104 1.157-.586a6.39 6.39 0 0 0-1.338-6.235z" /></svg><span class="sr-only">分享到微博</span></a><a href="mailto:?subject=分享文章&amp;body=https://guanwx.me/posts/blog/devops/CI-CD-%E9%83%A8%E7%BD%B2%E6%8E%92%E9%9A%9C%E8%AE%B0%E5%BD%95/" title="通过邮件分享这篇文章" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-1 hover:text-accent shrink-0 p-2 hover:rotate-6 sm:p-1"><svg width="24" height="24" viewBox="0 0 24 24" class="size-6 scale-125 fill-current opacity-90 sm:scale-110"><g fill="currentColor"><path d="M22 7.535V17a3 3 0 0 1-2.824 2.995L19 20H5a3 3 0 0 1-2.995-2.824L2 17V7.535l9.445 6.297.116.066a1 1 0 0 0 .878 0l.116-.066z" /><path d="M19 4c1.08 0 2.027.57 2.555 1.427L12 11.797l-9.555-6.37a3 3 0 0 1 2.354-1.42L5 4z" /></g></svg><span class="sr-only">通过邮件分享这篇文章</span></a><button type="button" data-wechat-open aria-controls="wechat-modal-share-e51qgo" aria-haspopup="dialog" class="focus-outline inline-flex shrink-0 items-center justify-center p-2 hover:rotate-6 hover:text-accent sm:p-1" title="微信扫码分享"><svg width="24" height="24" viewBox="0 0 24 24" class="size-6 scale-125 fill-current opacity-90 sm:scale-110"><path fill="currentColor" d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.33.33 0 0 0 .167-.054l1.903-1.114a.86.86 0 0 1 .717-.098 10.2 10.2 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348M5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18m5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.72.72 0 0 1 .598.082l1.584.926a.3.3 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.6.6 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982" /></svg><span class="sr-only">微信扫码分享</span></button></div><dialog id="wechat-modal-share-e51qgo" data-wechat-modal class="bg-background text-foreground m-auto rounded-xl p-6 shadow-2xl backdrop:bg-black/60"><div class="flex w-64 flex-col items-center gap-3"><div class="flex w-full items-center justify-between"><p class="font-semibold">微信扫码分享</p><button type="button" data-wechat-close class="focus-outline rounded-md p-1 opacity-70 hover:opacity-100" aria-label="关闭"><svg width="24" height="24" viewBox="0 0 24 24" class="size-5"><path fill="currentColor" d="M6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6z" /></svg></button></div><img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;data=https%3A%2F%2Fguanwx.me%2Fposts%2Fblog%2Fdevops%2FCI-CD-%25E9%2583%25A8%25E7%25BD%25B2%25E6%258E%2592%25E9%259A%259C%25E8%25AE%25B0%25E5%25BD%2595%2F" alt="微信二维码" class="border-border w-full h-auto rounded-md border" loading="lazy"><p class="text-sm opacity-80">扫码或长按，更多选择</p></div></dialog><script type="module">function e(){document.querySelectorAll(`[data-wechat-open]`).forEach(e=>{e.dataset.wechatBound||(e.dataset.wechatBound=`1`,e.addEventListener(`click`,()=>{let t=e.getAttribute(`aria-controls`);(t?document.getElementById(t):e.parentElement?.querySelector(`dialog`))?.showModal()}))}),document.querySelectorAll(`dialog[data-wechat-modal]`).forEach(e=>{if(e.dataset.wechatBound)return;e.dataset.wechatBound=`1`,e.addEventListener(`click`,t=>{t.target===e&&e.close()}),e.querySelector(`[data-wechat-close]`)?.addEventListener(`click`,()=>e.close());let t=e.querySelector(`img`),n=e.querySelector(`[data-wechat-img-fallback]`);t&&n&&t.addEventListener(`error`,()=>{t.classList.add(`hidden`),n.classList.remove(`hidden`)})})}e(),document.addEventListener(`astro:after-swap`,e);</script></div><script type="module">function e(e){let t=document.createElement(`div`);t.textContent=e,t.className=`bg-background border-border fixed bottom-8 left-1/2 z-70 -translate-x-1/2 rounded-md border px-4 py-2 text-sm shadow-lg`,document.body.appendChild(t),setTimeout(()=>t.remove(),1600)}function t(){document.querySelectorAll(`[data-copy-link]`).forEach(t=>{t.dataset.copyBound||(t.dataset.copyBound=`1`,t.addEventListener(`click`,()=>{let n=t.dataset.copyLink??``,r=()=>e(t.dataset.copiedText??`Link copied`);if(navigator.clipboard?.writeText)navigator.clipboard.writeText(n).then(r).catch(r);else{let e=document.createElement(`textarea`);e.value=n,document.body.appendChild(e),e.select(),document.execCommand(`copy`),e.remove(),r()}}))})}t(),document.addEventListener(`astro:after-swap`,t);</script><hr class="my-8 border-dashed"><div data-pagefind-ignore class="my-8 grid grid-cols-1 gap-6 sm:grid-cols-2"><a href="/posts/blog/java/线程池/Java多线程-线程池ThreadPoolExecutor/" class="flex w-full gap-1 hover:opacity-75"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="inline-block flex-none rtl:rotate-180" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z" /><path d="M5 12h14M5 12l6 6M5 12l6-6" /></svg><div><span>上一篇</span><div class="text-accent/85 text-sm">Java 线程池 ThreadPoolExecutor 详解</div></div></a></div></main><footer class="app-layout mt-auto"><!-- 单行三组布局：① 版权（左） ② 社交图标（中） ③ 统计（右），窄屏降级为竖向居中堆叠 --><div class="border-border flex flex-col items-center gap-3 border-t py-6 md:flex-row md:flex-wrap md:items-center md:justify-between"><div class="flex flex-col items-center whitespace-nowrap md:flex-row"><span>版权所有 &#169; 2021-2026.10.15</span><span class="hidden md:inline">&nbsp;|&nbsp;</span><span>保留所有权利。</span></div><div class="text-muted-foreground flex flex-col items-center gap-0.5 md:items-end"><span class="whitespace-nowrap"><svg aria-hidden="true" viewBox="0 0 512 512" fill="currentColor" class="mr-1 inline h-3 w-3 align-[-1px]"><path d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>最近更新&nbsp;<span id="footer-last-updated" data-build-time="2026-10-30T21:40:31.562Z" data-units="{&quot;justNow&quot;:&quot;刚刚&quot;,&quot;min&quot;:&quot;分钟前&quot;,&quot;hour&quot;:&quot;小时前&quot;,&quot;day&quot;:&quot;天前&quot;,&quot;month&quot;:&quot;个月前&quot;,&quot;year&quot;:&quot;年前&quot;}">刚刚</span></span><span class="whitespace-nowrap"><span id="busuanzi_container_site_uv" style="display:none" class="cursor-help whitespace-nowrap" title="本站访客数"><svg aria-hidden="true" viewBox="0 0 448 512" fill="currentColor" class="mr-1 inline h-3 w-3 align-[-1px]"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg><span id="busuanzi_value_site_uv"></span></span><span id="busuanzi_container_site_pv" style="display:none" class="cursor-help whitespace-nowrap" title="本站总浏览量">&nbsp;·&nbsp;<svg aria-hidden="true" viewBox="0 0 576 512" fill="currentColor" class="inline h-3 w-3 align-[-1px]"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 8.1-3.3 16.5 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-8.1 3.3-16.6 0-24.7c-14.9-35.7-46.2-87.7-93-131.6C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 61.4 87.2 114.9 87.2c65.4 0 118.6-52.3 121.4-117c.1-2.6 .2-5.2 .2-7.9c0-66.3-53.7-120-120-120c-5.7 0-11.3 .4-16.8 1.2c-5.8 .8-8.2 7.4-5.4 12.5c3.1 5.6 4.8 12.1 4.8 19c0 21.7-17.6 39.4-39.3 39.4z"></path></svg><span id="busuanzi_value_site_pv"></span></span></span></div></div></footer><script type="module">function e(){let e=document.getElementById(`footer-last-updated`);if(!e)return;let t=new Date(e.getAttribute(`data-build-time`)??``).getTime();if(Number.isNaN(t))return;let n={};try{n=JSON.parse(e.getAttribute(`data-units`)??`{}`)}catch{return}let r=Date.now()-t,i=6e4,a=60*i,o=24*a,s=30*o,c=365*o,l=n.justNow??``;r>=c?l=`${Math.floor(r/c)} ${n.year}`:r>=s?l=`${Math.floor(r/s)} ${n.month}`:r>=o?l=`${Math.floor(r/o)} ${n.day}`:r>=a?l=`${Math.floor(r/a)} ${n.hour}`:r>=i&&(l=`${Math.floor(r/i)} ${n.min}`),e.textContent=l}e(),document.addEventListener(`astro:page-load`,e);</script><script type="module">var e=`theme`,t=`light`,n=`dark`;function r(){return localStorage.getItem(e)||(window.matchMedia(`(prefers-color-scheme: dark)`).matches?n:t)}var i=window.__theme?.value??r();function a(){localStorage.setItem(e,i),o()}function o(){let e=document.firstElementChild;e?.setAttribute(`data-theme`,i),e?.classList.toggle(`dark`,i===n),document.querySelector(`#theme-btn`)?.setAttribute(`aria-label`,i);let t=window.getComputedStyle(document.body).backgroundColor;document.querySelector(`meta[name='theme-color']`)?.setAttribute(`content`,t)}function s(){o(),document.querySelector(`#theme-btn`)?.addEventListener(`click`,()=>{i=i===t?n:t,a()})}s(),document.addEventListener(`astro:after-swap`,s),document.addEventListener(`astro:before-swap`,e=>{let t=document.querySelector(`meta[name='theme-color']`)?.getAttribute(`content`);t&&e.newDocument.querySelector(`meta[name='theme-color']`)?.setAttribute(`content`,t)}),window.matchMedia(`(prefers-color-scheme: dark)`).addEventListener(`change`,({matches:e})=>{i=e?n:t,a()});{let e=`https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js`;document.addEventListener(`astro:page-load`,()=>{document.head.querySelectorAll(`script[src="${e}"]`).forEach(e=>e.remove());let t=document.createElement(`script`);t.src=e,t.async=!0,document.head.appendChild(t)})}var c=`wxblog:at-bottom`,l=8;function u(){let e=document.documentElement;return window.innerHeight+window.scrollY>=e.scrollHeight-l}function d(){try{sessionStorage.setItem(c,u()?`1`:`0`)}catch{}}var f=performance.getEntriesByType(`navigation`)[0],p=!1;try{p=sessionStorage.getItem(c)===`1`}catch{}f?.type===`reload`&&p&&window.addEventListener(`load`,()=>{document.fonts.ready.then(()=>{window.scrollTo({top:document.documentElement.scrollHeight,behavior:`instant`})})}),window.addEventListener(`scroll`,d,{passive:!0}),d();</script></body></html><script data-astro-rerun>
+  function createProgressBar() {
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-accent";
+    progressBar.id = "myBar";
+
+    progressContainer.appendChild(progressBar);
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  function updateScrollProgress() {
+    document.addEventListener("scroll", () => {
+      const winScroll =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const height =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      if (document) {
+        const myBar = document.getElementById("myBar");
+        if (myBar) {
+          myBar.style.width = scrolled + "%";
+        }
+      }
+    });
+  }
+  updateScrollProgress();
+
+  function addHeadingLinks() {
+    const headings = Array.from(
+      document.querySelectorAll("h2, h3, h4, h5, h6")
+    );
+    for (const heading of headings) {
+      heading.classList.add("group");
+      const link = document.createElement("a");
+      link.className =
+        "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
+      link.href = "#" + heading.id;
+
+      const span = document.createElement("span");
+      span.ariaHidden = "true";
+      span.innerText = "#";
+      link.appendChild(span);
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  function attachCopyButtons() {
+    const copyButtonLabel = "复制";
+    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (const codeBlock of codeBlocks) {
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      const computedStyle = getComputedStyle(codeBlock);
+      const hasFileNameOffset =
+        computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
+
+      const topClass = hasFileNameOffset
+        ? "top-(--file-name-offset)"
+        : "-top-3";
+
+      const copyButton = document.createElement("button");
+      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      const code = block.querySelector("code");
+      const text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      button.innerText = "已复制";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Accessible image lightbox for article images. */
+  function initLightbox() {
+    const article = document.getElementById("article");
+    if (!article) return;
+
+    const prefersReducedMotion = () =>
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let overlay = null;
+    let lastFocused = null;
+
+    // Defer attribute mutations so they don't push the LCP timestamp.
+    // Event listeners below use delegation and don't need the attributes to exist yet.
+    requestAnimationFrame(() => {
+      const images = Array.from(article.querySelectorAll("img"));
+      for (const image of images) {
+        if (image.closest("a")) continue;
+        image.setAttribute("role", "button");
+        image.setAttribute("tabindex", "0");
+        image.setAttribute("aria-haspopup", "dialog");
+        image.setAttribute(
+          "aria-label",
+          image.alt ? `放大图片：${image.alt}` : "放大图片"
+        );
+      }
+    });
+
+    function open(src, alt, trigger) {
+      if (overlay) return;
+      lastFocused = trigger ?? document.activeElement;
+
+      overlay = document.createElement("div");
+      overlay.setAttribute("role", "dialog");
+      overlay.setAttribute("aria-modal", "true");
+      overlay.setAttribute(
+        "aria-label",
+        alt ? `图片预览：${alt}` : "图片预览"
+      );
+      overlay.className =
+        "fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 transition-opacity duration-200 motion-reduce:transition-none";
+
+      const closeButton = document.createElement("button");
+      closeButton.type = "button";
+      closeButton.setAttribute("aria-label", "关闭图片预览");
+      closeButton.className =
+        "absolute end-4 top-4 rounded p-2 text-3xl leading-none text-white";
+      closeButton.innerHTML = "&#10005;";
+      closeButton.addEventListener("click", close);
+
+      const image = document.createElement("img");
+      image.src = src;
+      image.alt = "";
+      image.className =
+        "max-h-[90dvh] max-w-[90dvw] cursor-default object-contain";
+
+      overlay.append(closeButton, image);
+      overlay.addEventListener("click", e => {
+        if (e.target === overlay && currentScale <= 1) close();
+      });
+
+      let currentScale = 1;
+      let translateX = 0;
+      let translateY = 0;
+      let initialDist = 0;
+      let initialScale = 1;
+      let panStartX = 0;
+      let panStartY = 0;
+      let panStartTranslateX = 0;
+      let panStartTranslateY = 0;
+      let lastTapTime = 0;
+
+      function applyTransform() {
+        image.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+      }
+
+      function resetTransform() {
+        currentScale = 1;
+        translateX = 0;
+        translateY = 0;
+        image.style.transform = "";
+      }
+
+      overlay.addEventListener(
+        "touchstart",
+        e => {
+          const t = e.touches;
+          if (t.length === 2) {
+            initialDist = Math.hypot(
+              t[1].clientX - t[0].clientX,
+              t[1].clientY - t[0].clientY
+            );
+            initialScale = currentScale;
+          } else if (t.length === 1) {
+            const now = Date.now();
+            if (now - lastTapTime < 300) {
+              e.preventDefault();
+              if (currentScale > 1) {
+                resetTransform();
+              } else {
+                currentScale = 2;
+                translateX = 0;
+                translateY = 0;
+                applyTransform();
+              }
+              lastTapTime = 0;
+              panStartX = t[0].clientX;
+              panStartY = t[0].clientY;
+              panStartTranslateX = translateX;
+              panStartTranslateY = translateY;
+            } else {
+              lastTapTime = now;
+              if (currentScale > 1) {
+                panStartX = t[0].clientX;
+                panStartY = t[0].clientY;
+                panStartTranslateX = translateX;
+                panStartTranslateY = translateY;
+              }
+            }
+          }
+        },
+        { passive: false }
+      );
+
+      overlay.addEventListener(
+        "touchmove",
+        e => {
+          const t = e.touches;
+          if (t.length === 2) {
+            e.preventDefault();
+            const dist = Math.hypot(
+              t[1].clientX - t[0].clientX,
+              t[1].clientY - t[0].clientY
+            );
+            currentScale = Math.min(
+              4,
+              Math.max(1, initialScale * (dist / initialDist))
+            );
+            applyTransform();
+          } else if (t.length === 1) {
+            if (currentScale > 1) {
+              e.preventDefault();
+              translateX =
+                panStartTranslateX + (t[0].clientX - panStartX) / currentScale;
+              translateY =
+                panStartTranslateY + (t[0].clientY - panStartY) / currentScale;
+              const maxX = Math.max(
+                0,
+                (image.clientWidth - overlay.clientWidth / currentScale) / 2
+              );
+              const maxY = Math.max(
+                0,
+                (image.clientHeight - overlay.clientHeight / currentScale) / 2
+              );
+              translateX = Math.min(maxX, Math.max(-maxX, translateX));
+              translateY = Math.min(maxY, Math.max(-maxY, translateY));
+              applyTransform();
+            } else {
+              e.preventDefault();
+            }
+          }
+        },
+        { passive: false }
+      );
+
+      overlay.addEventListener("touchend", e => {
+        if (e.touches.length === 0 && currentScale <= 1.05) {
+          resetTransform();
+        }
+      });
+
+      overlay.addEventListener("touchcancel", e => {
+        if (e.touches.length === 0 && currentScale <= 1.05) {
+          resetTransform();
+        }
+      });
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", onKeyDown);
+      window.__closeLightbox = close;
+
+      requestAnimationFrame(() => overlay?.classList.add("opacity-100"));
+      closeButton.focus();
+    }
+
+    function close() {
+      if (!overlay) return;
+      const el = overlay;
+      overlay = null;
+      window.__closeLightbox = null;
+
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+      lastFocused?.focus();
+      lastFocused = null;
+
+      if (prefersReducedMotion()) {
+        el.remove();
+        return;
+      }
+      const remove = () => el.remove();
+      el.addEventListener("transitionend", remove, { once: true });
+      setTimeout(remove, 250); // fallback in case transitionend never fires
+      el.classList.remove("opacity-100");
+    }
+
+    function onKeyDown(e) {
+      if (e.key === "Escape") {
+        close();
+      } else if (e.key === "Tab") {
+        trapFocus(e);
+      }
+    }
+
+    // Keep keyboard focus inside the open dialog.
+    function trapFocus(e) {
+      if (!overlay) return;
+      const focusables = overlay.querySelectorAll(
+        'a[href], button, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function triggerFromEvent(e) {
+      const image = e.target.closest("img");
+      if (!image || !article.contains(image) || image.closest("a")) return null;
+      return image;
+    }
+
+    function activate(image) {
+      open(image.currentSrc || image.src, image.alt, image);
+    }
+
+    article.addEventListener("click", e => {
+      const image = triggerFromEvent(e);
+      if (!image) return;
+      e.preventDefault();
+      activate(image);
+    });
+
+    article.addEventListener("keydown", e => {
+      if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+      const image = triggerFromEvent(e);
+      if (!image) return;
+      e.preventDefault();
+      activate(image);
+    });
+  }
+  initLightbox();
+
+  if (!window.__lightboxSwapBound) {
+    window.__lightboxSwapBound = true;
+    document.addEventListener("astro:before-swap", () =>
+      window.__closeLightbox?.()
+    );
+  }
+
+  document.addEventListener("astro:after-swap", () =>
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" })
+  );
+</script>
